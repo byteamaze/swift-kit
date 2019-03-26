@@ -325,17 +325,29 @@ extension CGImage {
         return CGSize(width: w, height: h)
     }
     
+    /// 绘制Image的新Context
+    public func context(width: Int, height: Int, bytesPerRow: Int) -> CGContext? {
+        let cs = self.colorSpace ?? CGColorSpaceCreateDeviceRGB()
+        if let ctx = CGContext(data: nil, width: width, height: height,
+                               bitsPerComponent: self.bitsPerComponent,
+                               bytesPerRow: bytesPerRow, space: cs,
+                               bitmapInfo: self.bitmapInfo.rawValue) {
+            return ctx
+        }
+        let bi = CGImageAlphaInfo.premultipliedLast
+        return CGContext(data: nil, width: width, height: height,
+                         bitsPerComponent: self.bitsPerComponent,
+                         bytesPerRow: bytesPerRow, space: cs,
+                         bitmapInfo: bi.rawValue)
+    }
+    
     /// 比例缩放图片
     public func scaled(scale: CGFloat) -> CGImage? {
         let destW = Int(CGFloat(self.width) * scale)
         let destH = Int(CGFloat(self.height) * scale)
         let imageRect = CGRect(x: 0, y: 0, width: destW, height: destH)
         
-        let cs = self.colorSpace ?? CGColorSpaceCreateDeviceRGB()
-        let context = CGContext(data: nil, width: destW, height: destH,
-                                bitsPerComponent: self.bitsPerComponent,
-                                bytesPerRow: 0, space: cs,
-                                bitmapInfo: self.bitmapInfo.rawValue)
+        let context = self.context(width: destW, height: destH, bytesPerRow: 0)
         // 指定NSBitmapImageRep大小，防止Retina屏幕下NSImage与图片实际尺寸不同
         context?.draw(self, in: imageRect)
         return context?.makeImage()
@@ -358,8 +370,8 @@ extension CGImage {
         
         // redraw image into Context
         var orientedImage: CGImage? = nil
-        let colorSpace = self.colorSpace ?? CGColorSpaceCreateDeviceRGB()
-        if let context = CGContext(data: nil, width: dw, height: dh, bitsPerComponent: self.bitsPerComponent, bytesPerRow: bytesPerRow, space: colorSpace, bitmapInfo: self.bitmapInfo.rawValue) {
+        if let context = self.context(
+            width: dw, height: dh, bytesPerRow: bytesPerRow) {
             let halfWidth = CGFloat(dw) / 2
             let halfHeight = CGFloat(dh) / 2
             context.translateBy(x: halfWidth, y: halfHeight)
