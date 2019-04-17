@@ -33,8 +33,8 @@ public extension NSObject {
             return appName
         }
         #endif
-        let infoDictionary = Bundle.main.infoDictionary!
-        let majorName = infoDictionary[kCFBundleNameKey as String]
+        let infoDictionary = Bundle.main.localizedInfoDictionary!
+        let majorName = infoDictionary["CFBundleDisplayName"]
         return majorName as! String
     }
     
