@@ -128,7 +128,11 @@ public extension NSView {
 public extension UIView {
     /// 是否为RTL布局
     var isRtlLayout: Bool {
-        return self.effectiveUserInterfaceLayoutDirection == .rightToLeft
+        if #available(iOS 10.0, *) {
+            return self.effectiveUserInterfaceLayoutDirection == .rightToLeft
+        } else {
+            return false
+        }
     }
     
     /// 开启子线程渲染

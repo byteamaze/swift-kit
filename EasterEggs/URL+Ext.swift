@@ -53,8 +53,12 @@ public extension URL {
             options: .default, additionalEventParamDescriptor: nil,
             launchIdentifiers: nil)
         #elseif os(iOS)
-        UIApplication.shared.open(
-            self, options: [:], completionHandler: nil)
+        if #available(iOS 10.0, *) {
+            UIApplication.shared.open(
+                self, options: [:], completionHandler: nil)
+        } else {
+            UIApplication.shared.openURL(self)
+        }
         #endif
     }
     

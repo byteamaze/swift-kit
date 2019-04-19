@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'EasterEggs'
-  s.version          = '1.0'
+  s.version          = '1.0.2'
   s.summary          = 'extensions for macOS/iOS'
   s.swift_version = '4.0'
 
@@ -17,7 +17,7 @@ extensions for macOS/iOS.
     :tag => 'EasterEggs-' + s.version.to_s
   }
   s.osx.deployment_target = '10.11'
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '9.0'
 
   s.cocoapods_version = '>= 1.4.0'
   s.static_framework = true
