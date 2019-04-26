@@ -97,20 +97,20 @@ public extension String {
     
     /// 截取字符串
     public func subString(from: Int, to: Int) -> String? {
-        if(from>to || from >= self.length || from+to>self.length) {
+        if(from > to || from >= self.count || to > self.count) {
             return nil
         }
         return NSString(string: self)
-            .substring(with: NSMakeRange(from, to-from))
+            .substring(with: NSMakeRange(from, to - from))
     }
     
     /// 截取字符串
     public func subString(from: Int) -> String? {
-        if from >= self.length {
+        if from >= self.count {
             return nil
         }
         return NSString(string: self)
-            .substring(with: NSMakeRange(from, self.length-from))
+            .substring(with: NSMakeRange(from, self.count - from))
     }
     
     /// 截取字符串
