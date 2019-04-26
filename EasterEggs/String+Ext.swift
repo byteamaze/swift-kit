@@ -90,27 +90,17 @@ public extension String {
     
     /// 字符串长度
     public var length: Int {
-        get {
-            return NSString(string: self).length
-        }
+        return self.count
     }
     
     /// 截取字符串
-    public func subString(from: Int, to: Int) -> String? {
+    public func subString(from: Int, to end: Int? = nil) -> String? {
+        let to = end ?? self.count
         if(from > to || from >= self.count || to > self.count) {
             return nil
         }
         return NSString(string: self)
             .substring(with: NSMakeRange(from, to - from))
-    }
-    
-    /// 截取字符串
-    public func subString(from: Int) -> String? {
-        if from >= self.count {
-            return nil
-        }
-        return NSString(string: self)
-            .substring(with: NSMakeRange(from, self.count - from))
     }
     
     /// 截取字符串
@@ -129,7 +119,7 @@ public extension String {
     
     /// 是否为空
     public func isEmpty() -> Bool {
-        return NSString(string: self).length == 0
+        return self.count == 0
     }
     
     /// 16进制颜色
