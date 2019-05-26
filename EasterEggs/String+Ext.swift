@@ -88,15 +88,16 @@ public extension String {
         return URL(fileURLWithPath: self).parentFile.path
     }
     
-    /// 字符串长度
+    /// 字符串长度，UTF16字符长度，与String.count不一定相等
+    /// subString必须以lenght进行计算
     public var length: Int {
-        return self.count
+        return (self as NSString).length
     }
     
     /// 截取字符串
     public func subString(from: Int, to end: Int? = nil) -> String? {
-        let to = end ?? self.count
-        if(from > to || from >= self.count || to > self.count) {
+        let to = end ?? self.length
+        if(from > to || from >= self.length || to > self.length) {
             return nil
         }
         return NSString(string: self)
@@ -119,7 +120,7 @@ public extension String {
     
     /// 是否为空
     public func isEmpty() -> Bool {
-        return self.count == 0
+        return self.length == 0
     }
     
     /// 16进制颜色
