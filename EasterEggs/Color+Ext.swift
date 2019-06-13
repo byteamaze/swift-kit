@@ -5,6 +5,8 @@
 //  Copyright © 2018年 ByteAmaze. All rights reserved.
 //
 
+import Foundation
+
 /// 将16进制颜色转换为10进制色值
 public func colorComponent(
     _ hex: String, start: Int, length: Int) -> Float {

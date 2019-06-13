@@ -5,6 +5,8 @@
 //  Copyright © 2019 ByteAmaze. All rights reserved.
 //
 
+import Foundation
+
 extension UserDefaults {
     
     public struct Key {
