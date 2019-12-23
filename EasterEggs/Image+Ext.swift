@@ -181,10 +181,17 @@ extension UIImage {
     
     /// 图片真实尺寸
     public var realSize: CGSize {
-        if let cgImage = self.cgImage {
-            return cgImage.size
+        return self.cgImage?.size ?? self.size
+    }
+    
+    /// 考虑旋转后的真实宽高
+    public var realSizeOrientation: CGSize {
+        switch (self.imageOrientation) {
+        case .left, .leftMirrored, .right, .rightMirrored:
+            return self.realSize.swap()
+        default:
+            return self.realSize
         }
-        return self.size
     }
     
     /// 根据尺寸缩放图片
@@ -217,7 +224,7 @@ extension UIImage {
     /// 比例缩放图片
     public func scaled(_ scale: CGFloat) -> UIImage? {
         if let imageRef = self.cgImage?.scaled(scale: scale) {
-            return UIImage(cgImage: imageRef, scale: self.scale, orientation: .up)
+            return UIImage(cgImage: imageRef, scale: self.scale, orientation: self.imageOrientation)
         }
         return nil
     }
@@ -356,7 +363,8 @@ extension CGImage {
     /// 旋转图片
     public func rotated(degree: Int32, mirror: Bool = false) -> CGImage? {
         let swapWidthHeight = (degree % 180 != 0)
-        var bytesPerRow = self.bytesPerRow
+        // TODO: 测试bytesPerRow
+        var newBytesPerRow = (self.bitsPerPixel / 8) * self.width
         let radians = CGFloat(degree).degreeToRadians
         
         // swap width and height
@@ -365,13 +373,13 @@ extension CGImage {
             dw = self.height
             dh = self.width
             // calculate new bytes per row
-            bytesPerRow = self.height * (bytesPerRow / self.width)
+            newBytesPerRow = self.height * (self.bitsPerPixel / 8)
         }
         
         // redraw image into Context
         var orientedImage: CGImage? = nil
         if let context = self.context(
-            width: dw, height: dh, bytesPerRow: bytesPerRow) {
+            width: dw, height: dh, bytesPerRow: newBytesPerRow) {
             let halfWidth = CGFloat(dw) / 2
             let halfHeight = CGFloat(dh) / 2
             context.translateBy(x: halfWidth, y: halfHeight)

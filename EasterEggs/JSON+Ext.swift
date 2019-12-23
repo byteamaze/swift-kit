@@ -48,34 +48,31 @@ public extension Data {
 }
 
 public extension NSDictionary {
-    
     /// 转为JSON
-    public func jsonData() -> Data? {
-        return try? JSONSerialization.data(
-            withJSONObject: self, options: .prettyPrinted)
+    public func jsonData(prettyPrinted: Bool = false) -> Data? {
+        return try? JSONSerialization.data(withJSONObject:
+            self, options: prettyPrinted ? .prettyPrinted : [])
     }
     
     /// 转为JSON字符串
-    public func jsonString() -> String? {
-        if let data = jsonData() {
+    public func jsonString(prettyPrinted: Bool = false) -> String? {
+        if let data = jsonData(prettyPrinted: prettyPrinted) {
             return String(data: data, encoding: .utf8)
         }
         return nil
     }
-    
 }
 
 public extension NSArray {
-    
     // 转为JSON
-    public func jsonData() -> Data? {
-        return try? JSONSerialization.data(
-            withJSONObject: self, options: .prettyPrinted)
+    public func jsonData(prettyPrinted: Bool = false) -> Data? {
+        return try? JSONSerialization.data(withJSONObject:
+            self, options: prettyPrinted ? .prettyPrinted : [])
     }
     
     // 转为JSON字符串
-    public func jsonString() -> String? {
-        if let data = jsonData() {
+    public func jsonString(prettyPrinted: Bool = false) -> String? {
+        if let data = jsonData(prettyPrinted: prettyPrinted) {
             return String(data: data, encoding: .utf8)
         }
         return nil
